@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Req } from "@nestjs/common";
+import { All, Body, Controller, Get, Headers, HostParam, HttpCode, Param, Post, Query, Req } from "@nestjs/common";
 
 @Controller('dog')
 export class DogController {
@@ -16,7 +16,6 @@ export class DogController {
         @Req() req
     ){
         console.log("body = ",body);
-        // console.log("req =", req);
     }
 
     @Post('/test1')
@@ -27,5 +26,39 @@ export class DogController {
     @Get('/test1/:id/:type/:help')
     async getDogById(@Param() params){
         return params
+    }
+
+    //simplified
+    @Get('/test101')
+    getdoggies(@Query() query){
+        return query
+    }
+
+    //best practice = Tell what value you want and set a default value
+    @Get('/test102')
+    async getDogQ(
+        @Query('page') page="1",
+        @Query('limit') limit="10"
+    ){
+        return {
+            page,
+            limit
+        }
+    }
+
+    //simplified
+    @Post('/testh101')
+    async getDogHeader(@Headers() header){
+        return header
+    }
+
+    @Get('/testhe')
+    async getDogHost(@HostParam() hp){
+        return hp
+    }
+
+    @All("/all")
+    async allgett(){
+        return "All is alling"
     }
 }
